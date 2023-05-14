@@ -41,7 +41,9 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
 
       - name: Code Quality
-        run: poetry run black . --check
+        run: |
+          poetry run pre-commit install
+          poetry run pre-commit run --all-files
 
       - name: Test with tox
         run: poetry run tox
