@@ -14,6 +14,7 @@ python = "^3.10"
 bumpver = "^2023.1121"
 pytest = "^7.3.1"
 black = {extras = ["d"], version = "^23.3.0"}
+tox = "^4.5.1"
 
 [build-system]
 requires = ["poetry-core"]
