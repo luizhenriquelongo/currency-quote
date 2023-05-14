@@ -6,18 +6,14 @@ on:
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ ubuntu-latest ]
-        python-version: ['3.10']
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.10.3
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.10.3
           fetch-depth: '2'
 
       - name: Set the value
@@ -26,7 +22,10 @@ jobs:
 
       - name: Install Poetry
         run: |
-          curl -sSL https://install.python-poetry.org | python3 -
+          curl -fsS -o install-poetry.py \
+            https://raw.githubusercontent.com/python-poetry/poetry/HEAD/install-poetry.py
+          python install-poetry.py -y
+          echo "$POETRY_HOME/bin" >> $GITHUB_PATH
 
       - name: Cache Poetry virtualenv
         uses: actions/cache@v1
@@ -50,5 +49,5 @@ jobs:
       - name: Generate coverage report
         run: poetry run pytest --cov=./ --cov-report=xml
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+#      - name: Upload coverage to Codecov
+#        uses: codecov/codecov-action@v3
