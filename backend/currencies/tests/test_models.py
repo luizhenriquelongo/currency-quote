@@ -10,13 +10,13 @@ from currencies.models import (
 
 @pytest.fixture
 def usd_currency():
-    return Currency.objects.create(name="US Dollar", representation="USD", symbol="$")
+    return Currency.objects.create(name="US Dollar", code="USD", symbol="$")
 
 
 @pytest.mark.django_db
 class TestRateQuoteModel:
     def test_clean_method(self, usd_currency):
-        brl_currency = Currency.objects.create(name="Brazilian Real", representation="BRL", symbol="R$")
+        brl_currency = Currency.objects.create(name="Brazilian Real", code="BRL", symbol="R$")
 
         quote = RateQuote(
             date="2023-05-15", base_currency=usd_currency, rate_currency=brl_currency, rate_value=Decimal("5.2")

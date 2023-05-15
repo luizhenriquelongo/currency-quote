@@ -5,7 +5,7 @@ from django.db import models
 
 class Currency(models.Model):
     name = models.CharField(max_length=100, null=False, blank=False)
-    representation = models.CharField(max_length=3, null=False, blank=False)
+    code = models.CharField(max_length=3, null=False, blank=False)
     symbol = models.CharField(max_length=3, null=False, blank=False)
 
 
