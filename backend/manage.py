@@ -5,13 +5,13 @@ import sys
 
 from dotenv import load_dotenv
 
-from backend.config.settings.base import BASE_DIR
+from config.settings.base import ROOT_DIR
 
 
 def main():
     """Run administrative tasks."""
-    load_dotenv(BASE_DIR / ".env")
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", os.getenv("SETTINGS_FILE", "production"))
+    load_dotenv(ROOT_DIR / ".env")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", f"config.settings.{os.getenv('SETTINGS_FILE', 'production')}")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
