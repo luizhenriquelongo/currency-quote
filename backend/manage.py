@@ -5,7 +5,7 @@ import sys
 
 from dotenv import load_dotenv
 
-from config.settings.base import BASE_DIR
+from backend.config.settings.base import BASE_DIR
 
 
 def main():
