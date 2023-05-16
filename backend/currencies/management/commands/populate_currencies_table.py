@@ -12,11 +12,11 @@ class Command(BaseCommand):
         api = VATComplyAPI()
         response = api.get_currencies()
 
-        if response is None:
-            self.stdout.write(self.style.ERROR("Couldn't fetch currencies, please try again latter."))
+        if response is not None:
+            with transaction.atomic():
+                for currency in response:
+                    Currency.objects.update_or_create(code=currency.code, defaults=currency.dict())
 
-        with transaction.atomic():
-            for currency in response:
-                Currency.objects.update_or_create(code=currency.code, defaults=currency.dict())
+            self.stdout.write(self.style.SUCCESS("Currencies fetched and added successfully."))
 
-        self.stdout.write(self.style.SUCCESS("Currencies fetched and added successfully."))
+        self.stdout.write(self.style.ERROR("Couldn't fetch currencies, please try again later."))
