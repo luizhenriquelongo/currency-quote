@@ -19,4 +19,5 @@ class Command(BaseCommand):
 
             self.stdout.write(self.style.SUCCESS("Currencies fetched and added successfully."))
 
-        self.stdout.write(self.style.ERROR("Couldn't fetch currencies, please try again later."))
+        else:
+            self.stdout.write(self.style.ERROR("Couldn't fetch currencies, please try again later."))
