@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 
 from currencies.models import (
     Currency,
-    RateQuote,
+    ExchangeRate,
 )
 
 
@@ -18,20 +18,18 @@ class TestRateQuoteModel:
     def test_clean_method(self, usd_currency):
         brl_currency = Currency.objects.create(name="Brazilian Real", code="BRL", symbol="R$")
 
-        quote = RateQuote(
-            date="2023-05-15", base_currency=usd_currency, rate_currency=brl_currency, rate_value=Decimal("5.2")
-        )
+        quote = ExchangeRate(date="2023-05-15", base_currency=usd_currency, currency=brl_currency, rate=Decimal("5.2"))
         quote.full_clean()
         quote.save()
 
-        assert RateQuote.objects.filter(pk=quote.pk).exists()
+        assert ExchangeRate.objects.filter(pk=quote.pk).exists()
 
     def test_if_clean_method_raises_exception(self, usd_currency):
         with pytest.raises(ValidationError):
-            quote = RateQuote(
-                date="2023-05-15", base_currency=usd_currency, rate_currency=usd_currency, rate_value=Decimal("0.5")
+            quote = ExchangeRate(
+                date="2023-05-15", base_currency=usd_currency, currency=usd_currency, rate=Decimal("0.5")
             )
             quote.full_clean()
             quote.save()
 
-        assert len(RateQuote.objects.all()) == 0
+        assert len(ExchangeRate.objects.all()) == 0
