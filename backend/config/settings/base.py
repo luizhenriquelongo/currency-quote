@@ -29,7 +29,11 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # Application definition
 INSTALLED_APPS = [
+    "django.contrib.contenttypes",
+    "django.contrib.auth",
     "django.contrib.staticfiles",
+    "drf_spectacular",
+    "rest_framework",
     "currencies",
 ]
 
@@ -105,3 +109,16 @@ STATIC_ROOT = BASE_DIR / "static"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Currency Quote API",
+    "DESCRIPTION": "Get dollar-based exchange rates with ease.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+}
+
+MAPPED_CURRENCIES = ["EUR", "USD", "BRL", "JPY"]

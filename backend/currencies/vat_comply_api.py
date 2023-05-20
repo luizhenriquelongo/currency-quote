@@ -4,17 +4,18 @@ from urllib.parse import urlencode
 
 import requests
 
+from currencies.interfaces import APIInterface
 from currencies.schemas import (
     CurrencySchema,
     GetRatesAPIResponseSchema,
 )
 
 
-class VATComplyAPI:
+class VATComplyAPI(APIInterface):
     BASE_URL: str = "https://api.vatcomply.com"
 
     def get_rates(
-        self, base_currency: str = "USD", rates_date: str = date.today().strftime("%Y-%m-%d")
+        self, rates_date: str = date.today().isoformat(), *, base_currency: str = "USD"
     ) -> GetRatesAPIResponseSchema | None:
         query_params = {"base": base_currency, "date": rates_date}
         url = self.build_url(path="/rates", query_params=query_params)
@@ -26,7 +27,7 @@ class VATComplyAPI:
         except requests.HTTPError:
             return None
 
-        return GetRatesAPIResponseSchema(**raw_response.json())
+        return GetRatesAPIResponseSchema.parse_obj(raw_response.json())
 
     def get_currencies(self) -> List[CurrencySchema] | None:
         url = self.build_url(path="/currencies")
