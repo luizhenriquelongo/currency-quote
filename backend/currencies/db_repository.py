@@ -1,21 +1,11 @@
-import abc
 import datetime
 from typing import List
 
+from currencies.interfaces import RepositoryInterface
 from currencies.models import (
     Currency,
     ExchangeRate,
 )
-
-
-class RepositoryInterface(abc.ABC):
-    @abc.abstractmethod
-    def filter_rates_by_date_range(self, start_date: datetime.date, end_date: datetime.date) -> List[ExchangeRate]:
-        ...
-
-    @abc.abstractmethod
-    def get_currencies(self, currencies: List[str]) -> List[Currency]:
-        ...
 
 
 class DBRepository(RepositoryInterface):
