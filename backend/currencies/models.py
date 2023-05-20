@@ -16,7 +16,11 @@ class ExchangeRate(models.Model):
     rate = models.DecimalField(decimal_places=16, max_digits=20)
 
     class Meta:
-        constraints = [models.UniqueConstraint(fields=["date", "base_currency", "currency"], name="unique_fields")]
+        unique_together = (
+            "date",
+            "base_currency",
+            "currency",
+        )
 
     def clean(self):
         super().clean()
