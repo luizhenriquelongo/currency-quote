@@ -1,20 +1,20 @@
+# Base image
+FROM python:3.10
+
 ARG DJANGO_SECRET_KEY
 ARG DATABASE_URL
 ARG DJANGO_SETTINGS_MODULE
 
-# Base image
-FROM python:3.10
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV PATH="/root/.local/bin:$PATH"
 ENV DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY
-ENV DJANGO_SETTINGS_MODULE="config.settings.production"
+ENV DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
 ENV DATABASE_URL=$DATABASE_URL
+ENV PORT=$PORT
 
-
-RUN echo $DATABASE_URL
 # Install Make
 RUN apt-get update && \
     apt-get install -y build-essential && \
@@ -36,7 +36,7 @@ COPY . /app/
 RUN make build
 
 # Expose the application port
-EXPOSE 8000:8000
+EXPOSE $PORT
 
 WORKDIR /app/backend
-CMD poetry run gunicorn --bind :8000 --workers 3 config.wsgi:application
+CMD poetry run gunicorn --workers 3 config.wsgi:application
