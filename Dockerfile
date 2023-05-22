@@ -14,7 +14,7 @@ ENV DJANGO_SETTINGS_MODULE="config.settings.production"
 ENV DATABASE_URL=$DATABASE_URL
 
 
-
+RUN echo $DATABASE_URL
 # Install Make
 RUN apt-get update && \
     apt-get install -y build-essential && \
