@@ -4,7 +4,7 @@ Este repositório contém um projeto Django que permite obter as cotações de m
 
 ## Deploy
 
-Para acessa a versão com o deploy feito acesse a seguinte URL:
+Para acessar a versão com o deploy feito acesse a seguinte URL:
 - https://currency-quote-production.up.railway.app/
 
 Acesse também a documentação dos endpoints:
