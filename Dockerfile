@@ -1,4 +1,7 @@
-ARG EnvironmentVariable
+ARG DJANGO_SECRET_KEY
+ARG DATABASE_URL
+ARG DJANGO_SETTINGS_MODULE
+
 # Base image
 FROM python:3.10
 
