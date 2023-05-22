@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.auth",
     "django.contrib.staticfiles",
+    "whitenoise.runserver_nostatic",
     "drf_spectacular",
     "rest_framework",
     "corsheaders",
@@ -99,7 +100,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     ROOT_DIR / "frontend/public",
     ROOT_DIR / "frontend/build",
@@ -135,3 +136,9 @@ CORS_ALLOWED_METHODS = [
     "GET",
     "POST",
 ]
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
