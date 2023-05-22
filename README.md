@@ -2,6 +2,14 @@
 
 Este repositório contém um projeto Django que permite obter as cotações de moedas estrangeiras usando a API de conversão de moedas. Com base em uma taxa de câmbio atualizada, é possível obter as cotações de moedas.
 
+## Deploy
+
+Para acessa a versão com o deploy feito acesse a seguinte URL:
+- https://currency-quote-production.up.railway.app/
+
+Acesse também a documentação dos endpoints:
+- https://currency-quote-production.up.railway.app/api/docs
+
 ## Pré-requisitos
 
 Antes de executar o projeto, certifique-se de ter o seguinte:
