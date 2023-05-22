@@ -39,4 +39,4 @@ RUN make build
 EXPOSE $PORT
 
 WORKDIR /app/backend
-CMD poetry run gunicorn --workers 3 config.wsgi:application
+CMD poetry run gunicorn --workers 3 config.wsgi:application --log-level=debug
