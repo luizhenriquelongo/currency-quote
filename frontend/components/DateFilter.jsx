@@ -30,7 +30,7 @@ const DateFilter = ({handleApplyFilters}) => {
   return (<Grid container spacing={2} alignItems="center">
       <Grid item>
         <DatePicker
-          label="Data Inicial"
+          label="Start Date"
           value={startDate}
           onChange={handleStartDateChange}
           renderInput={(params) => <TextField {...params} />}
@@ -39,7 +39,7 @@ const DateFilter = ({handleApplyFilters}) => {
       </Grid>
       <Grid item>
         <DatePicker
-          label="Data Final"
+          label="End Date"
           value={endDate}
           onChange={handleEndDateChange}
           renderInput={(params) => <TextField {...params} />}
@@ -49,7 +49,7 @@ const DateFilter = ({handleApplyFilters}) => {
       <Grid item>
         <Grid container justifyContent="flex-end">
           <Button variant="contained" onClick={buttonOnClick}>
-            Aplicar
+            Apply
           </Button>
         </Grid>
       </Grid>

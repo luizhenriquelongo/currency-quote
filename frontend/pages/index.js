@@ -24,12 +24,12 @@ const defaultOptions = {
     shared: true,
   },
   title: {
-    text: "Cotação baseada no Dolar ($)",
+    text: "Echange Rate (Dollar Based)",
   },
   yAxis: {
     type: 'logarithmic',
     title: {
-      text: 'Moeda X Dolar ($)',
+      text: 'Rate X Dollar ($)',
     },
     tickInterval: 1,
     lineWidth: 2,
@@ -38,7 +38,7 @@ const defaultOptions = {
   xAxis: [{
     type: 'datetime',
     title: {
-      text: 'Data'
+      text: 'Date'
     },
     offset: 20,
     tickWidth: 1,
@@ -71,14 +71,10 @@ export default function Home() {
   const [chartOptions, setChartOptions] = useState(defaultOptions);
 
   const retrieveApiData = async (startDate, endDate, setError) => {
-    console.log(startDate);
-    console.log(endDate);
-
     const startDateString = startDate?.toISOString().split('T')[0];
     const endDateString = endDate?.toISOString().split('T')[0];
 
     const mapApiResponse = (data) => {
-      console.log(data)
       let series = []
       Object.entries(data.currencies).map(([currency, obj]) => {
         if (currency === "USD") return
@@ -100,7 +96,6 @@ export default function Home() {
           })
         })
       })
-      console.log(series);
       setChartOptions({...chartOptions, series: series});
     }
 
@@ -109,7 +104,6 @@ export default function Home() {
     )
     let data = await response.json();
     if (response.status === 400) {
-      console.log("resposta é 400");
       setError(data);
     } else {
       setError(null);
