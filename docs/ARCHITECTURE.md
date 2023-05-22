@@ -24,3 +24,11 @@ Confira o Diagrama de Sequência abaixo com a ilustração do fluxo.
 
 ## Diagrama de Sequência
 ![Diagrama de Sequência](./sequence_diagram.png)
+
+## Possíveis melhorías futuras
+- Testes de API com pytest.
+- Testes unitários no frontend.
+- Monitoramento de logs no banckend.
+- Documentar código do backend através de DocStrings.
+- Melhoria no design do frontend.
+- Melhoria na experiência de usuário do frontend.
