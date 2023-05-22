@@ -34,11 +34,13 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "drf_spectacular",
     "rest_framework",
+    "corsheaders",
     "currencies",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
 ]
@@ -122,3 +124,15 @@ SPECTACULAR_SETTINGS = {
 }
 
 MAPPED_CURRENCIES = ["EUR", "USD", "BRL", "JPY"]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_HEADERS = [
+    "Accept",
+    "Content-Type",
+]
+
+CORS_ALLOWED_METHODS = [
+    "GET",
+    "POST",
+]

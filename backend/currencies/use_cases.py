@@ -41,7 +41,7 @@ class GetRatesUseCase:
             end_date=self._query_args.end_date,
         )
         if not dates_to_search:
-            return JsonResponse(self.response.dict())
+            return self.process_response()
 
         db_results = self._repository.filter_rates_by_date_range(
             start_date=utils.isodate_to_datetime(self._query_args.start_date),
