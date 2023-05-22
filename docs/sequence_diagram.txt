@@ -1,0 +1,25 @@
+title /api/rates/
+
+
+note over Cliente: Início
+Cliente->API: **Request**: \nRange de datas para busca
+
+
+
+API->Banco de Dados: **Query**: \nLista de datas para a busca
+
+API<-Banco de Dados:Retorna os dados referentes às datas \ndisponíveis no banco de dados
+
+box over API: Com base nos dados retornados,\na API gera uma lista de datas \nindisponíveis no db para a consulta 
+
+opt Caso alguma(s) das datas solicitadas esteja indisponível no banco de dados
+API->VATComplyAPI:**Request**: \nPara cada data indisponível: $date = data indisponível\n**GET** https://api.vatcomply.com/rates?date=//**$date//**&base=USD
+
+API<-VATComplyAPI:Dados relacionados a data em questão
+
+API-->Banco de Dados:**INSERT**: \nDados das datas que estavam indisponíveis \nno banco de dados
+end
+
+API->Cliente:**Response**: \nCotações das datas solicitadas \nna request
+
+note over Cliente: Fim

@@ -10,6 +10,9 @@ Para acessa a versão com o deploy feito acesse a seguinte URL:
 Acesse também a documentação dos endpoints:
 - https://currency-quote-production.up.railway.app/api/docs
 
+## Arquitetura do projeto
+Para entender mais sobre a arquitetura do projeto, [clique aqui](./docs/ARCHITECTURE.md).
+
 ## Pré-requisitos
 
 Antes de executar o projeto, certifique-se de ter o seguinte:
