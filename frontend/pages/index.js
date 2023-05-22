@@ -105,7 +105,7 @@ export default function Home() {
     }
 
     let response = await fetch(
-      `http://localhost:8000/api/rates/?start_date=${startDateString}&end_date=${endDateString}&currencies=true`
+      `/api/rates/?start_date=${startDateString}&end_date=${endDateString}&currencies=true`
     )
     let data = await response.json();
     if (response.status === 400) {
