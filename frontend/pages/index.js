@@ -1,115 +1,145 @@
-import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import * as React from 'react';
+import {useState} from 'react';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import {Box, Container, Paper, Typography} from "@mui/material";
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
+import DateFilter from "../components/DateFilter";
+
+
+const defaultOptions = {
+  chart: {
+    type: 'line',
+    backgroundColor: '#f8f8f8',
+    options3d: {
+      enabled: true,
+      alpha: 15,
+      beta: 30,
+      depth: 300,
+    },
+  },
+  tooltip: {
+    pointFormat: '<b>{series.options.custom.code}:</b> {series.options.custom.symbol} {point.y:.2f}<br/>',
+    shared: true,
+  },
+  title: {
+    text: "Cotação baseada no Dolar ($)",
+  },
+  yAxis: {
+    type: 'logarithmic',
+    title: {
+      text: 'Moeda X Dolar ($)',
+    },
+    tickInterval: 1,
+    lineWidth: 2,
+    offset: 20,
+  },
+  xAxis: [{
+    type: 'datetime',
+    title: {
+      text: 'Data'
+    },
+    offset: 20,
+    tickWidth: 1,
+    labels: {
+      format: '{value:%d %b %Y}',
+    },
+    dateTimeLabelFormats: {
+      day: '%d %b %Y',
+      week: '%d %b %Y',
+      month: '%b %Y',
+      year: '%Y'
+    }
+  }],
+  plotOptions: {
+    line: {
+      dataLabels: {
+        enabled: true,
+        format: '{series.options.custom.symbol} {point.y:.2f}'
+      },
+      depth: 100
+    }
+  },
+  series: [{name: "", data: []}],
+  credits: {
+    enabled: false,
+  },
+}
 
 export default function Home() {
+  const [chartOptions, setChartOptions] = useState(defaultOptions);
+
+  const retrieveApiData = async (startDate, endDate, setError) => {
+    console.log(startDate);
+    console.log(endDate);
+
+    const startDateString = startDate?.toISOString().split('T')[0];
+    const endDateString = endDate?.toISOString().split('T')[0];
+
+    const mapApiResponse = (data) => {
+      console.log(data)
+      let series = []
+      Object.entries(data.currencies).map(([currency, obj]) => {
+        if (currency === "USD") return
+
+        series.push({
+          name: obj.name,
+          xAxis: 0,
+          custom: {
+            code: obj.code,
+            symbol: obj.symbol,
+          },
+          data: data.results.map((result) => {
+            const rates = result.rates;
+            const dateParts = result.date.split('-');
+            const year = parseInt(dateParts[0]);
+            const month = parseInt(dateParts[1]) - 1;
+            const day = parseInt(dateParts[2]);
+            return [Date.UTC(year, month, day), parseFloat(rates[currency])]
+          })
+        })
+      })
+      console.log(series);
+      setChartOptions({...chartOptions, series: series});
+    }
+
+    let response = await fetch(
+      `http://localhost:8000/api/rates/?start_date=${startDateString}&end_date=${endDateString}&currencies=true`
+    )
+    let data = await response.json();
+    if (response.status === 400) {
+      console.log("resposta é 400");
+      setError(data);
+    } else {
+      setError(null);
+      mapApiResponse(data);
+    }
+  }
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing <code>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel" className={styles.logo} />
-        </a>
-      </footer>
-
-      <style jsx>{`
-        main {
-          padding: 5rem 0;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-        footer {
-          width: 100%;
-          height: 100px;
-          border-top: 1px solid #eaeaea;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        footer img {
-          margin-left: 0.5rem;
-        }
-        footer a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          text-decoration: none;
-          color: inherit;
-        }
-        code {
-          background: #fafafa;
-          border-radius: 5px;
-          padding: 0.75rem;
-          font-size: 1.1rem;
-          font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-            DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-        }
-      `}</style>
-
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
-        }
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
-    </div>
+    <Box display="flex" justifyContent="center" alignItems="center" height="100vh" width="100vw">
+      <Paper elevation={10} style={{padding: 20}}>
+        <Box display="flex" justifyContent="center">
+          <Typography variant="h2" gutterBottom>
+            Currency Quote
+          </Typography>
+        </Box>
+        <Box display="flex" justifyContent="center" alignItems="center" height="80vh" width="80vw">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Container maxWidth="xl" style={{display: 'flex'}}>
+              <Container maxWidth="md" style={{flex: 2}}>
+                <HighchartsReact highcharts={Highcharts} options={chartOptions}/>
+              </Container>
+              <Container maxWidth="sm" style={{flex: 1}}>
+                <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+                  <DateFilter handleApplyFilters={retrieveApiData}/>
+                </Box>
+              </Container>
+            </Container>
+          </LocalizationProvider>
+        </Box>
+      </Paper>
+    </Box>
   )
 }

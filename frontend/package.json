@@ -1,11 +1,24 @@
 {
+  "name": "frontend",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build && cd ../backend && poetry run python scripts/update_static_src.py -d ../frontend/build",
+    "test": "next build && next start",
     "start": "next start"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.13.1",
+    "@mui/x-date-pickers": "^6.5.0",
+    "currency.js": "^2.0.4",
+    "currencyjs": "^1.0.0",
+    "date-fns": "^2.30.0",
+    "dayjs": "^1.11.7",
+    "highcharts": "^11.0.1",
+    "highcharts-react-official": "^3.2.0",
+    "lodash": "^4.17.21",
     "next": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0"
